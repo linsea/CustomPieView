@@ -39,7 +39,7 @@ import com.example.android.customviews.R;
 public class PieChart extends ViewGroup {
     private List<Item> mData = new ArrayList<Item>();
 
-    private float mTotal = 0.0f;
+    private float mTotal = 0.0f;//值的总量,即100%时值的总量.
 
     private RectF mPieBounds = new RectF();
 
@@ -55,7 +55,7 @@ public class PieChart extends ViewGroup {
     private float mTextHeight = 0.0f;
     private int mTextPos = TEXTPOS_LEFT;
 
-    private float mHighlightStrength = 1.15f;
+    private float mHighlightStrength = 1.15f;//使某颜色加深的加深因子.
 
     private float mPointerRadius = 2.0f;
     private float mPointerX;
@@ -74,6 +74,7 @@ public class PieChart extends ViewGroup {
 
     // The angle at which we measure the current item. This is
     // where the pointer points.
+    // 当前指示的Item的在圆内所占的角度.
     private int mCurrentItemAngle;
 
     // the index of the current item.
@@ -83,16 +84,19 @@ public class PieChart extends ViewGroup {
     private RectF mShadowBounds = new RectF();
 
     /**
+     * 说明文字画在左边时的标志字段.
      * Draw text to the left of the pie chart
      */
     public static final int TEXTPOS_LEFT = 0;
 
     /**
+     * 说明文字画在右边时的标志字段.
      * Draw text to the right of the pie chart
      */
     public static final int TEXTPOS_RIGHT = 1;
 
     /**
+     * 只需1/4的滑动速度则认为是滑动动作?
      * The initial fling velocity is divided by this amount.
      */
     public static final int FLING_VELOCITY_DOWNSCALE = 4;
@@ -111,6 +115,7 @@ public class PieChart extends ViewGroup {
     }
 
     /**
+     * 通过代码创建PieChart View对象时使用的构造函数.
      * Class constructor taking only a context. Use this constructor to create
      * {@link PieChart} objects from your own code.
      *
@@ -122,6 +127,17 @@ public class PieChart extends ViewGroup {
     }
 
     /**
+     * 通过XML创建PieChart View对象时使用的构造函数.
+     * 
+     * 注意它的AttributeSet参数,它包含了attrs.xml文件中定义的参数,
+     * 以及layout文件夹中定义视图的main.xml文件中指定的参数值.
+     * 但是它没有包含通过styles或themes(styles或themes是指一组属性的集合,用于批量定义属性,便于统一风格)
+     * 指定的属性,而且它可能包含还没有真正解码出来的通过引用指向的值,所以需要调用obtainStyledAttributes()
+     * 来获取最终的值.
+     * 
+     * 由于没有包含通过styles或themes间接指定的属性值,所以如果有这种情况,需要重写第三种形式的构造方法:
+     * (Context context, AttributeSet attrs, int defStyle).
+     * 
      * Class constructor taking a context and an attribute set. This constructor
      * is used by the layout engine to construct a {@link PieChart} from a set of
      * XML attributes.
@@ -144,7 +160,7 @@ public class PieChart extends ViewGroup {
         // the custom attributes that were declared in attrs.xml.
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.PieChart,
+                R.styleable.PieChart,//attrs.xml中自定义的属性的ID数组,Android中很多东西都是通过ID来指定与引用的.
                 0, 0
         );
 
@@ -278,6 +294,7 @@ public class PieChart extends ViewGroup {
     }
 
     /**
+     * 加深颜色,以突出显示.
      * Returns the strength of the highlighting applied to each pie segment.
      *
      * @return The highlight strength.
@@ -327,6 +344,7 @@ public class PieChart extends ViewGroup {
     }
 
     /**
+     * 饼图当前旋转的角度.
      * Returns the current rotation of the pie graphic.
      *
      * @return The current pie rotation, in degrees.
@@ -584,6 +602,7 @@ public class PieChart extends ViewGroup {
     }
 
     /**
+     * 计算当前指示标签指向的是哪个Item.
      * Calculate which pie slice is under the pointer, and set the current item
      * field accordingly.
      */
